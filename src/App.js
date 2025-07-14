@@ -30,14 +30,15 @@ export default function App() {
     const minGTM = parseInt(minGT, 10);
 
     const earliestETD = ataM + minGTM;
-    const totalDelay = atdM - stdM;
+
+    let totalDelay = atdM - stdM;
+    totalDelay = Math.max(0, totalDelay); // ✅ cap at 0
 
     let delay93 = Math.max(0, earliestETD - stdM);
-    if (delay93 > totalDelay) {
-      delay93 = totalDelay; // ✅ cap delay93 to totalDelay
-    }
+    delay93 = Math.min(delay93, totalDelay); // ✅ don't exceed totalDelay
 
-    const delay81 = Math.max(0, totalDelay - delay93);
+    let delay81 = totalDelay - delay93;
+    delay81 = Math.max(0, delay81); // ✅ cap at 0
 
     setRes({
       earliestETD: formatTime(earliestETD),
